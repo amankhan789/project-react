@@ -4,26 +4,27 @@ import Axios from "axios";
 import { Link, NavLink, useHistory } from "react-router-dom";
 import Validation_login from "./validation_login"
 
-function Login() {
+const Login = () => {
   const [userLogin, setUserLogin] = useState({
     email: "",
-    password: "",
+    password: ""
   });
   
+ 
 
   const handleInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+
     setUserLogin({ ...userLogin, [name]: value });
-
   }
-  let history = useHistory();
-
+ 
   const [errors, setErrors] = useState({});
-  
+
   const handleSubmit = (e) => {
     e.preventDefault()
-    setErrors(Validation_login(userLogin))
+
+    setErrors (Validation_login(userLogin))
 
     Axios.post("https://5f3d-103-21-55-66.ngrok.io/api/users/login", userLogin)
       .then((result) => {
@@ -32,11 +33,18 @@ function Login() {
       })
 
       // .catch((error) => {
-      //   console.log(error);
-          
-      //  })
+      //   console.log(error.response.data); 
+      // })       
+        // Loginemail = error.response.data.errors[0]['msg'];
+        // LoginPwd = error.response.data.errors[1]['msg'];
+        // error.response.data.errors.map( (value) => {
+        //    console.log('Loginemail',value);   
+        //   // LoginErrors.push(value.msg);
+        // });
+     
     //history.push("/home");
-
+    // 
+    //console.log('LoginErrors',errors);
   }
 
   return (
@@ -51,8 +59,8 @@ function Login() {
                   <input type="email" className="form-control" id="email" name="email"  
                     value={userLogin.email} onChange={handleInput}
                   />
-                  {errors.email && <p className="error"> {errors.email}</p>}
-
+                   {errors.email  && <p className="err"> {errors.email}</p>}
+                  
                 </div>
                 <div className="mb-3">
                   <label htmlFor="password" className="form-label">Password</label>
@@ -60,7 +68,7 @@ function Login() {
                     value={userLogin.password}
                     onChange={handleInput}
                   />
-                  {errors.password  && <p className="error"> {errors.password}</p>}
+                  {errors.password  && <p className="err"> {errors.password}</p>}
                
                 </div>
                 <div className="butn">
